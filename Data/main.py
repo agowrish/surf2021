@@ -1,7 +1,6 @@
 import shutil, os
 import pandas as pd
 import xlrd
-from xml2xlsx import xml2xlsx
 import xml.etree.ElementTree as ET
 import numpy as np
 
@@ -16,7 +15,7 @@ def process_county_sheet(df,i):
     length = len(df[id].tolist())
     county_list = [ga_counties[i] for j in range(length)]
     df = df.rename(columns={id:"Precinct"})
-    df[id] = county_list
+    df['County'] = county_list
     df = df.drop([length-1])
     return df
 
@@ -57,18 +56,27 @@ for i in range(len(fips)):
     if int(fips[i]) > 13000 and int(fips[i]) < 14000:
         ga_counties.append(names[i])
 ga_counties.sort()
-parent = '/Users/akshaygowrish/Downloads'
-dest_folder = parent + '/GA_Nov_Data'
+parent = '/Users/akshaygowrish/Documents'
+dest_folder = parent + '/surf2021/Data'
 
 full_table = pd.DataFrame()
 
-for i in range(NUM_COUNTIES):
+'''for i in range(2,81):
     print(ga_counties[i])
+    dest = dest_folder + '/_'
+    dest2 = dest + ga_counties[102-i] + '_' + str(102-i) + '_nov.xls'
+    dest = dest + ga_counties[i] + '_' + str(i)
+    dest = dest + '_nov2.xls'
+    # print(dest)
+    os.rename(dest2,dest)'''
+
+for i in range(NUM_COUNTIES):
     dest = dest_folder + '/_' + ga_counties[i] + '_'
     dest = dest + str(i)
-    dest2 = dest + '_nov.xlsx'
+    dest2 = dest + '_nov2.xls'
     dest = dest + '_nov.xls'
-    # print(dest)
+    print(dest)
+    # os.rename(dest2,dest)
     df0 = pd.read_excel(dest,sheet_name=0,header=3)
     contests = ['President','Senate','SenateSpecial','PublicService1','PublicService4']
     df = pd.read_excel(dest,sheet_name=1)
